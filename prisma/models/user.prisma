@@ -1,10 +1,18 @@
+// ──────────────────────────────────────────────────────
+// User Model
+// ──────────────────────────────────────────────────────
+// Enums:     UserRole (from prisma/enums/role.prisma)
+// Relations: UserOrganization (from prisma/relations/user_organization.prisma)
+
 model User {
-  userId               String        @id @default(uuid()) @map("user_id")
-  email                String        @unique
-  password             String
-  name                 String?
-  organizationId       String?       @map("organization_id")
-  organization         Organization? @relation("UserOrganization", fields: [organizationId], references: [orgId])
-  createdAt            DateTime      @default(now())
-  updatedAt            DateTime      @updatedAt
+  userId        String             @id @default(uuid()) @map("user_id")
+  email         String             @unique
+  password      String
+  name          String?
+  role          UserRole           @default(MEMBER)
+  organizations UserOrganization[]
+  createdAt     DateTime           @default(now()) @map("created_at")
+  updatedAt     DateTime           @updatedAt @map("updated_at")
+
+  @@map("users")
 }

@@ -1,0 +1,18 @@
+// ──────────────────────────────────────────────────────
+// User ↔ Organization (Many-to-Many Join Table)
+// ──────────────────────────────────────────────────────
+// This is an explicit join table to connect users and organizations.
+// Extra fields like `role` and `joinedAt` make explicit join tables
+// more useful than Prisma's implicit many-to-many.
+
+model UserOrganization {
+  userId         String       @map("user_id")
+  organizationId String       @map("organization_id")
+  role           UserRole     @default(MEMBER)
+  user           User         @relation(fields: [userId], references: [userId])
+  organization   Organization @relation(fields: [organizationId], references: [orgId])
+  joinedAt       DateTime     @default(now()) @map("joined_at")
+
+  @@id([userId, organizationId])
+  @@map("user_organizations")
+}

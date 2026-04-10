@@ -1,7 +1,16 @@
+// ──────────────────────────────────────────────────────
+// Organization Model
+// ──────────────────────────────────────────────────────
+// Enums:     OrgPlan (from prisma/enums/organization.prisma)
+// Relations: UserOrganization (from prisma/relations/user_organization.prisma)
+
 model Organization {
-  orgId                String   @id @default(uuid()) @map("org_id")
-  name                 String
-  users                User[]   @relation("UserOrganization")
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  orgId     String             @id @default(uuid()) @map("org_id")
+  name      String
+  plan      OrgPlan            @default(FREE)
+  users     UserOrganization[]
+  createdAt DateTime           @default(now()) @map("created_at")
+  updatedAt DateTime           @updatedAt @map("updated_at")
+
+  @@map("organizations")
 }

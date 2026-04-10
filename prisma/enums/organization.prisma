@@ -1,15 +1,9 @@
 // ──────────────────────────────────────────────────────
-// Prisma Base Config (generator + datasource)
+// Organization Plan Enum
 // ──────────────────────────────────────────────────────
-// This is the root schema file. Keep only generator and datasource here.
-// Models → prisma/models/
-// Enums  → prisma/enums/
 
-generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
-}
-
-datasource db {
-  provider = "postgresql"
+enum OrgPlan {
+  FREE
+  PRO
+  ENTERPRISE
 }
