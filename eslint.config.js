@@ -1,12 +1,15 @@
-const tseslint = require('@typescript-eslint/eslint-plugin');
-const tsparser = require('@typescript-eslint/parser');
-const prettierPlugin = require('eslint-plugin-prettier');
-const fs = require('fs');
-const path = require('path');
+import tseslint from '@typescript-eslint/eslint-plugin';
+import tsparser from '@typescript-eslint/parser';
+import prettierPlugin from 'eslint-plugin-prettier';
+import { readFileSync } from 'fs';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 
-const prettierConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '.prettierrc'), 'utf8'));
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
-module.exports = [
+const prettierConfig = JSON.parse(readFileSync(join(__dirname, '.prettierrc'), 'utf8'));
+
+export default [
   {
     files: ['**/*.ts'],
     plugins: {

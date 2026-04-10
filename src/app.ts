@@ -11,6 +11,7 @@ import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
 import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
+import prisma from '@databases/prisma';
 
 class App {
   public app: express.Application;
@@ -22,11 +23,12 @@ class App {
     this.env = NODE_ENV || 'development';
     this.port = PORT || 3000;
 
-    // this.connectToDatabase();
+    this.connectToDatabase();
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
     this.initializeSwagger();
     this.initializeErrorHandling();
+    this.initializeGracefulShutdown();
   }
 
   public listen() {
@@ -38,14 +40,31 @@ class App {
     });
   }
 
-  // public async closeDatabaseConnection(): Promise<void> {
-  //   try {
-  //     await disconnect();
-  //     console.log('Disconnected from MongoDB');
-  //   } catch (error) {
-  //     console.error('Error closing database connection:', error);
-  //   }
-  // }
+  private async connectToDatabase(): Promise<void> {
+    try {
+      await prisma.$connect();
+      logger.info('✅ Database connected successfully');
+    } catch (error) {
+      logger.error('❌ Database connection failed', error);
+      process.exit(1);
+    }
+  }
+
+  private initializeGracefulShutdown(): void {
+    const shutdown = async (signal: string) => {
+      logger.info(`${signal} received. Shutting down gracefully...`);
+      try {
+        await prisma.$disconnect();
+        logger.info('✅ Database connection closed');
+      } catch (error) {
+        logger.error('❌ Error closing database connection', error);
+      }
+      process.exit(0);
+    };
+
+    process.on('SIGTERM', () => shutdown('SIGTERM'));
+    process.on('SIGINT', () => shutdown('SIGINT'));
+  }
 
   public getServer() {
     return this.app;

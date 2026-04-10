@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { CreateUserDto } from '@dtos/users.dto';
 import { User } from '@interfaces/users.interface';
 import userService from '@services/users.service';
 
@@ -17,10 +18,10 @@ class UsersController {
 
   public getUserById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // const userId: string = req.params.id;
-      // const findOneUserData: User = await this.userService.findUserById(userId);
+      const userId: string = req.params.id as string;
+      const findOneUserData: User | null = await this.userService.findUserById(userId);
 
-      res.status(200).json({ data: null, message: 'findOne' });
+      res.status(200).json({ data: findOneUserData, message: 'findOne' });
     } catch (error) {
       next(error);
     }
@@ -28,10 +29,10 @@ class UsersController {
 
   public createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // const userData: CreateUserDto = req.body;
-      // const createUserData: User = await this.userService.createUser(userData);
+      const userData: CreateUserDto = req.body;
+      const createUserData: User = await this.userService.createUser(userData);
 
-      res.status(201).json({ data: null, message: 'created' });
+      res.status(201).json({ data: createUserData, message: 'created' });
     } catch (error) {
       next(error);
     }
@@ -39,11 +40,11 @@ class UsersController {
 
   public updateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // const userId: string = req.params.id;
-      // const userData: CreateUserDto = req.body;
-      // const updateUserData: User = await this.userService.updateUser(userId, userData);
+      const userId: string = req.params.id as string;
+      const userData: Partial<CreateUserDto> = req.body;
+      const updateUserData: User = await this.userService.updateUser(userId, userData);
 
-      res.status(200).json({ data: null, message: 'updated' });
+      res.status(200).json({ data: updateUserData, message: 'updated' });
     } catch (error) {
       next(error);
     }
@@ -51,8 +52,8 @@ class UsersController {
 
   public deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // const userId: string = req.params.id;
-      // const deleteUserData: User = await this.userService.deleteUser(userId);
+      const userId: string = req.params.id as string;
+      await this.userService.deleteUser(userId);
 
       res.status(200).json({ data: null, message: 'deleted' });
     } catch (error) {

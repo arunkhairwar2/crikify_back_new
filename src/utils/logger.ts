@@ -15,8 +15,14 @@ const logDir: string = resolve(process.cwd(), LOG_DIR || 'logs');
   }
 });
 
-// Define log format
-const logFormat = winston.format.printf(({ timestamp, level, message }) => `${timestamp} ${level}: ${message}`);
+// Define log format — include stack trace for errors so crashes are easy to debug
+const logFormat = winston.format.printf(({ timestamp, level, message, stack }) => {
+  let line = `${timestamp} ${level}: ${message}`;
+  if (stack) {
+    line += `\n${stack}`;
+  }
+  return line;
+});
 
 /*
  * Log Level
@@ -24,6 +30,7 @@ const logFormat = winston.format.printf(({ timestamp, level, message }) => `${ti
  */
 const logger = winston.createLogger({
   format: winston.format.combine(
+    winston.format.errors({ stack: true }),
     winston.format.timestamp({
       format: 'YYYY-MM-DD HH:mm:ss',
     }),
