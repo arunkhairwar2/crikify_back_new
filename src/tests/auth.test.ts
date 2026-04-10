@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import mongoose from 'mongoose';
 import request from 'supertest';
 import App from '@/app';
 import { CreateUserDto } from '@dtos/users.dto';
@@ -30,7 +29,6 @@ describe('Testing Auth', () => {
         password: await bcrypt.hash(userData.password, 10),
       });
 
-      (mongoose as any).connect = jest.fn();
       const app = new App([authRoute]);
       return request(app.getServer()).post(`${authRoute.path}signup`).send(userData);
     });
@@ -52,7 +50,6 @@ describe('Testing Auth', () => {
         password: await bcrypt.hash(userData.password, 10),
       });
 
-      (mongoose as any).connect = jest.fn();
       const app = new App([authRoute]);
       return request(app.getServer())
         .post(`${authRoute.path}login`)
@@ -74,7 +71,6 @@ describe('Testing Auth', () => {
 
   //     users.findOne = jest.fn().mockReturnValue(userData);
 
-  //     (mongoose as any).connect = jest.fn();
   //     const app = new App([authRoute]);
   //     return request(app.getServer())
   //       .post(`${authRoute.path}logout`)

@@ -1,18 +1,19 @@
-import { SECRET_KEY } from '@config';
+// import { SECRET_KEY } from '@config';
 import { HttpException } from '@exceptions/HttpException';
-import { DataStoredInToken, RequestWithUser } from '@interfaces/auth.interface';
+import { RequestWithUser } from '@interfaces/auth.interface';
 import { NextFunction, Response } from 'express';
-import { verify } from 'jsonwebtoken';
 
 const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
-    const Authorization = req.cookies['Authorization'] || (req.header('Authorization') ? req.header('Authorization').split('Bearer ')[1] : null);
+    const authHeader = req.header('Authorization') || '';
+    const Authorization = req.cookies['Authorization'] || (authHeader.includes('Bearer ') ? authHeader.split('Bearer ')[1] : null);
 
     if (Authorization) {
-      const secretKey: string = SECRET_KEY;
-      const verificationResponse = (await verify(Authorization, secretKey)) as DataStoredInToken;
-      const userId = verificationResponse._id;
-      // const findUser = await userModel.findById(userId);
+      // TODO: Uncomment when userModel is available
+      // const _secretKey: string = SECRET_KEY ?? '';
+      // const _verificationResponse = (await verify(Authorization, _secretKey)) as DataStoredInToken;
+      // const _userId = _verificationResponse._id;
+      // const findUser = await userModel.findById(_userId);
       const findUser = { _id: 'wefiwbevfv', email: '[EMAIL_ADDRESS]', password: '[PASSWORD]' };
 
       if (findUser) {
@@ -24,7 +25,7 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
     } else {
       next(new HttpException(404, 'Authentication token missing'));
     }
-  } catch (error) {
+  } catch (_error) {
     next(new HttpException(401, 'Wrong authentication token'));
   }
 };
