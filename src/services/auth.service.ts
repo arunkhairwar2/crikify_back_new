@@ -18,7 +18,7 @@ class AuthService {
       data: { ...userData, password: hashedPassword },
     });
 
-    return user;
+    return user as unknown as User;
   }
 
   public async login(userData: CreateUserDto): Promise<{ cookie: string; user: User }> {
@@ -32,10 +32,10 @@ class AuthService {
       throw Object.assign(new Error('Password is not matching'), { status: 409 });
     }
 
-    const tokenData = this.createToken(findUser);
+    const tokenData = this.createToken(findUser as unknown as User);
     const cookie = this.createCookie(tokenData);
 
-    return { cookie, user: findUser };
+    return { cookie, user: findUser as unknown as User };
   }
 
   public async logout(userData: User): Promise<User> {

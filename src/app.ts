@@ -11,6 +11,7 @@ import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
 import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
+import { parseOrigins } from '@utils/util';
 import prisma from '@databases/prisma';
 
 class App {
@@ -80,7 +81,7 @@ class App {
 
   private initializeMiddlewares() {
     this.app.use(morgan(LOG_FORMAT ?? 'debug', { stream }));
-    this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
+    this.app.use(cors({ origin: parseOrigins(ORIGIN), credentials: CREDENTIALS }));
     this.app.use(hpp());
     this.app.use(helmet());
     this.app.use(compression());

@@ -14,7 +14,7 @@
  * - Monotonic within same millisecond (last random bit incremented)
  */
 
-import { ulid, monotonicUlid } from 'ulid';
+import { ulid, monotonicFactory } from 'ulid';
 
 const ULID_EPOCH = 1288834974657;
 
@@ -29,6 +29,7 @@ export const generateUlid = (): string => ulid();
  * Guarantees strictly increasing values when called multiple times in same ms
  * @returns 26-character monotonic ULID string
  */
+const monotonicUlid = monotonicFactory();
 export const generateMonotonicUlid = (): string => monotonicUlid();
 
 /**

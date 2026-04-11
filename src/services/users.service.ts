@@ -5,22 +5,22 @@ import prisma from '@databases/prisma';
 class UserService {
   public async findAllUser(): Promise<User[]> {
     const users = await prisma.user.findMany();
-    return users;
+    return users as unknown as User[];
   }
 
   public async findUserById(userId: string): Promise<User | null> {
     const user = await prisma.user.findUnique({ where: { userId } });
-    return user;
+    return user as unknown as User | null;
   }
 
   public async createUser(userData: CreateUserDto): Promise<User> {
     const user = await prisma.user.create({ data: userData });
-    return user;
+    return user as unknown as User;
   }
 
   public async updateUser(userId: string, userData: Partial<CreateUserDto>): Promise<User> {
     const user = await prisma.user.update({ where: { userId }, data: userData });
-    return user;
+    return user as unknown as User;
   }
 
   public async deleteUser(userId: string): Promise<void> {

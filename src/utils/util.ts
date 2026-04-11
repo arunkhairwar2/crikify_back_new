@@ -17,3 +17,19 @@ export const isEmpty = (value: string | number | object): boolean => {
     return false;
   }
 };
+
+/**
+ * @method parseOrigins
+ * @param {String} origin
+ * @returns {Boolean | String[]}
+ * @description parses comma-separated origins into an array, returns true for wildcard '*'
+ */
+export const parseOrigins = (origin: string): boolean | string[] => {
+  if (origin.trim() === '*') {
+    return true;
+  }
+  return origin
+    .split(',')
+    .map(o => o.trim())
+    .filter(Boolean);
+};
