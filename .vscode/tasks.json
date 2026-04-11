@@ -1,0 +1,116 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "TypeScript: Watch",
+      "type": "typescript",
+      "tsconfig": "tsconfig.json",
+      "problemMatcher": [
+        "$tsc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcherOwners": [
+        "typescript"
+      ]
+    },
+    {
+      "label": "TypeScript: Check",
+      "type": "typescript",
+      "tsconfig": "tsconfig.json",
+      "problemMatcher": [
+        "$tsc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcherOwners": [
+        "typescript"
+      ]
+    },
+    {
+      "label": "ESLint: Check",
+      "type": "shell",
+      "command": "npm run lint",
+      "problemMatcher": {
+        "owner": "eslint",
+        "fileLocation": "relativeToGlob",
+        "pattern": {
+          "regexp": "^/([^:]+):(\\d+):(\\d+):\\s+(error|warning)\\s+(.*)\\s+\\((.*)\\)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5,
+          "code": 6
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^$",
+          "endsPattern": "^$"
+        }
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "npm run build",
+      "problemMatcher": [
+        "$swc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Dev Server",
+      "type": "shell",
+      "command": "npm run dev",
+      "problemMatcher": [],
+      "isBackground": true,
+      "group": {
+        "kind": "none",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    }
+  ],
+  "problemMatchers": [
+    {
+      "name": "swc",
+      "owner": "swc",
+      "fileLocation": "relativeToGlob",
+      "pattern": {
+        "regexp": "^FAIL\\s+(.* \\[.*\\])$",
+        "file": 1
+      },
+      "severity": "error"
+    },
+    {
+      "name": "eslint",
+      "owner": "eslint",
+      "fileLocation": "relativeToGlob",
+      "pattern": {
+        "regexp": "^/([^/]+):(\\d+):(\\d+)\\s+(error|warning)\\s+(.*)\\s+\\((.*)\\)$",
+        "file": 1,
+        "line": 2,
+        "column": 3,
+        "severity": 4,
+        "message": 5,
+        "code": 6
+      },
+      "severity": "error"
+    }
+  ]
+}
