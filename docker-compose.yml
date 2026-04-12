@@ -6,15 +6,12 @@ services:
       dockerfile: Dockerfile
     container_name: app_server
     environment:
-      DATABASE_URL: postgresql://postgres:2005@db:5432/test_db
+      DATABASE_URL: postgresql://postgres:2005@host.docker.internal:5432/test_db
     ports:
       - '3000:3000'
     volumes:
       - .:/app
       - /app/node_modules
-    depends_on:
-      db:
-        condition: service_healthy
     restart: unless-stopped
     networks:
       - backend
@@ -25,30 +22,6 @@ services:
       retries: 3
       start_period: 40s
 
-  db:
-    image: postgres:16-alpine
-    container_name: app_database
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: '2005'
-      POSTGRES_DB: test_db
-    ports:
-      - '5433:5432'
-    volumes:
-      - data:/var/lib/postgresql/data
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U postgres']
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-    networks:
-      - backend
-
 networks:
   backend:
     driver: bridge
-
-volumes:
-  data:
-    driver: local
