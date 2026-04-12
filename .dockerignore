@@ -1,18 +1,23 @@
-# compiled output
+.git
+.gitignore
+node_modules
+dist
+coverage
+*.log
+.env
+.env.test
+.env.*
+!.env.example
 .vscode
-/node_modules
-
-# code formatter
-.eslintrc
-.eslintignore
-.editorconfig
-.huskyrc
-.lintstagedrc.json
-.prettierrc
-
-# test
-jest.config.js
-
-# docker
+.idea
+*.test.ts
+*.spec.ts
+src/tests
+logs
+*.tgz
+.DS_Store
+node_modules/bcrypt/.dockerignore
 Dockerfile
 docker-compose.yml
+*.md
+CODE_REVIEW.md
