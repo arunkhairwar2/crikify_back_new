@@ -1,5 +1,5 @@
 # Common build stage
-FROM node:22-alpine AS common-build-stage
+FROM node:22-slim AS common-build-stage
 
 WORKDIR /app
 

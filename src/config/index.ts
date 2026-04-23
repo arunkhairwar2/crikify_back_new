@@ -60,7 +60,7 @@ if (process.env.NODE_ENV !== 'test' && !parsedEnv.success) {
 }
 
 // Use defaults in test, validated config otherwise
-const env = process.env.NODE_ENV === 'test' ? envSchema.parse({}) : parsedEnv.data;
+const env = process.env.NODE_ENV === 'test' ? envSchema.parse({}) : parsedEnv.data!;
 
 // Export the validated variables
 export const {
